@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+//https://www.cnblogs.com/wyy1234/p/9172467.html
+
 namespace TaskSampleConsole
 {
     class Program
@@ -29,6 +31,16 @@ namespace TaskSampleConsole
             //TaskWait();
 
             TaskContinueWith();
+
+            Console.WriteLine("线程池操作");
+
+            for (int i = 0; i < 10; i++)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback((obj) =>
+                {
+                    Console.WriteLine($"第{obj}个任务");
+                }),i);
+            }
 
             Console.ReadLine();
 
