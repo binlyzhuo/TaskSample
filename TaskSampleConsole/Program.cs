@@ -49,6 +49,8 @@ namespace TaskSampleConsole
             
             task.Start();
             Console.WriteLine("主线程执行其他处理");
+
+            // wait是同步方法，会堵塞主线程
             task.Wait();
             Console.WriteLine("任务执行结果:{0}",task.Result);
         }
