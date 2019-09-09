@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 namespace TaskSampleForm
 {
+    //https://www.cnblogs.com/pengstone/archive/2012/12/23/2830238.html
     public partial class Form1 : Form
     {
         public Form1()
@@ -22,7 +23,27 @@ namespace TaskSampleForm
         private void Button1_Click(object sender, EventArgs e)
         {
             //TaskWait();
-            TaskWait2();
+            //TaskWait2();
+
+            //获得同步上下文任务调度器
+            TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
+            Task<int> task = new Task<int>(() =>
+            {
+                Thread.Sleep(2000);
+                int sum = 0;
+                for (int i = 0; i < 100; i++)
+                {
+                    sum += i;
+                }
+
+                return sum;
+            });
+
+            var cts = new CancellationTokenSource();
+            task.ContinueWith(t => { this.label1.Text = "采用SynchronizationContextTaskScheduler任务调度器更新UI。\r\n计算结果是"+task.Result.ToString(); },cts.Token,TaskContinuationOptions.AttachedToParent,scheduler);
+
+            task.Start();
         }
         void TaskWait()
         {
