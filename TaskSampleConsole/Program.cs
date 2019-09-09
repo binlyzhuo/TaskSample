@@ -26,7 +26,9 @@ namespace TaskSampleConsole
             //Console.ReadLine();
             Thread.Sleep(2000);
 
-            TaskWait();
+            //TaskWait();
+
+            TaskContinueWith();
 
             Console.ReadLine();
 
@@ -53,6 +55,30 @@ namespace TaskSampleConsole
             // wait是同步方法，会堵塞主线程
             task.Wait();
             Console.WriteLine("任务执行结果:{0}",task.Result);
+
+            
+        }
+
+        static void TaskContinueWith()
+        {
+            Task<int> task = new Task<int>(() =>
+            {
+                int sum = 0;
+                Console.WriteLine("使用Task执行异步操作");
+                for (int i = 0; i < 100; i++)
+                {
+                    sum += i;
+                }
+
+                return sum;
+            });
+
+            task.Start();
+            Console.WriteLine("主线程执行其他处理");
+            Task tk = task.ContinueWith(t =>
+            {
+                Console.WriteLine("任务完成结果:{0}",t.Result.ToString());
+            });
         }
     }
 }
