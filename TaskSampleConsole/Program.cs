@@ -91,6 +91,8 @@ namespace TaskSampleConsole
             {
                 Console.WriteLine("任务完成结果:{0}",t.Result.ToString());
             });
+
+
         }
     }
 }
