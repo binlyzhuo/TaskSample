@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 //https://www.cnblogs.com/wyy1234/p/9172467.html
 //https://www.cnblogs.com/wyy1234/p/9172467.html
+//https://www.cnblogs.com/doforfuture/p/6293926.html
 
 
 namespace TaskSampleConsole
@@ -53,6 +54,8 @@ namespace TaskSampleConsole
 
             string content2 = GetContent("txt.txt");
             Console.WriteLine(content2);
+
+            TaskCallBack();
             Console.ReadLine();
 
         }
@@ -155,6 +158,23 @@ namespace TaskSampleConsole
                 return result;
             }
             
+        }
+
+        static void TaskCallBack()
+        {
+            Console.WriteLine("主线程开始");
+            Task<string> task = Task.Run(() =>
+            {
+                Thread.Sleep(5000);
+                return Thread.CurrentThread.ManagedThreadId.ToString();
+            });
+
+            task.GetAwaiter().OnCompleted(() =>
+            {
+                Console.WriteLine("CallBack Result:"+task.Result);
+            });
+
+            Console.WriteLine("主线程结束");
         }
     }
 }
